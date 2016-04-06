@@ -31,7 +31,7 @@ void draw() {
   } else if (angleValueX > limitAngle) {
     angleValueX = limitAngle;
   } 
-  
+    
   if(angleValueY < -limitAngle) {
     angleValueY = -limitAngle;
   } else if (angleValueY > limitAngle) {

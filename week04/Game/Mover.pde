@@ -6,6 +6,8 @@ class Mover {
   PVector projectedGravityForce;
   PVector friction;
   float gravityConstant = 1;
+  float vBuffer;
+  boolean edge;
 
   Mover() {
     location = new PVector(width/2, height/2 - 5 - 24, 0);
@@ -25,7 +27,7 @@ class Mover {
     //gravityForce.x = sin(rotZ) * cos(rotZ) * gravityConstant;
     //gravityForce.z = sin(rotX) * cos(rotZ) * gravityConstant;
     //gravityForce.y = sin(rotZ) * sin(rotZ) * gravityConstant + sin(rotX) * sin(rotX) * gravityConstant;
-    
+    edge = false;
     velocity.add(projectedGravityForce);
     
     float normalForce = 1;
@@ -53,12 +55,21 @@ class Mover {
   }
 
   void checkEdges() { //<>//
-    if(width/2 - location.x > 250 || width/2 - location.x < -250) {
-     velocity.x = -velocity.x; 
+    if(width/2 - location.x + 12 > 250 || width/2 - location.x - 12 < -250) {
+     vBuffer     = -1 * velocity.x;
+      velocity.x = 0;//-velocity.x; 
      velocity.y = -abs(velocity.y);
+     edge = true;
     }
-    if(location.z > 250 || location.z < -250) {
-     velocity.z = -velocity.z; 
+    if(velocity.x == 0 && edge){
+     velocity.x = vBuffer; 
+    }
+    if(velocity.z == 0&& edge){
+     velocity.z = vBuffer; 
+    }
+    if(location.z + 12 > 250 || location.z - 12 < -250) {
+      vBuffer     = -1 * velocity.z;
+     velocity.z = 0; 
      velocity.y = -abs(velocity.y);
     }
   }
